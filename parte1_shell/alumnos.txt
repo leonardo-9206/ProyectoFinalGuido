@@ -1,5 +1,4 @@
 123456,Leonardo,Perez,4,85
 234567,Ana,Gomez,4,90
-345678,Juan,Lopez,5,65
-456789,Maria,Martinez,5,95
-567890,Pedro,Hernandez,6,55
+343434,Joao,Sanchez,4,9
+1111,Anotnio,Villasenor,4,2

@@ -1,10 +1,9 @@
 /* 
- * Proyecto Final UNIX - Parte 2
- * Codigo fuente obtenido de repositorio Open Source para practica de Makefile
- * Repositorio Original: https://github.com/mnisjk/snake
- * Adaptado para ncurses y Makefile
- */
-
+Proyecto Final UNIX - Parte 2
+El codigo fuente fue obtenido de repositorio Open Source para practica de Makefile
+repositorio Original: https://github.com/mnisjk/snake
+adaptadopara ncurses y Makefile
+*/
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
