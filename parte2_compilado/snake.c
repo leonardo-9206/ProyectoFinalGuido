@@ -1,7 +1,8 @@
 /* 
- * Simple Snake Game in C using ncurses
- * Original concept widely available on GitHub
- * Adapted for UNIX Final Project
+ * Proyecto Final UNIX - Parte 2
+ * Codigo fuente obtenido de repositorio Open Source para practica de Makefile
+ * Repositorio Original: https://github.com/mnisjk/snake
+ * Adaptado para ncurses y Makefile
  */
 
 #include <ncurses.h>
@@ -9,14 +10,16 @@
 #include <unistd.h>
 #include <time.h>
 
-#define DELAY 100000 // Microseconds
+#define DELAY 100000
 
-int x, y, fruitX, fruitY, score;
-int tailX[100], tailY[100];
+int x, y;
+int fruitX, fruitY;
+int score;
+int tailX[100];
+int tailY[100];
 int nTail;
 int gameOver;
 
-// Enum for directions
 typedef enum { STOP = 0, LEFT, RIGHT, UP, DOWN } Direction;
 Direction dir;
 
@@ -33,9 +36,11 @@ void Setup() {
     dir = STOP;
     x = COLS / 2;
     y = LINES / 2;
+    
     srand(time(NULL));
     fruitX = rand() % COLS;
     fruitY = rand() % LINES;
+    
     score = 0;
     nTail = 0;
 }
@@ -43,8 +48,9 @@ void Setup() {
 void Draw() {
     clear();
     
-    // Draw Top Wall
-    for (int i = 0; i < COLS; i++) mvprintw(0, i, "#");
+    for (int i = 0; i < COLS; i++) {
+        mvprintw(0, i, "#");
+    }
 
     for (int i = 1; i < LINES - 1; i++) {
         for (int j = 0; j < COLS; j++) {
@@ -69,10 +75,11 @@ void Draw() {
         }
     }
 
-    // Draw Bottom Wall
-    for (int i = 0; i < COLS; i++) mvprintw(LINES - 1, i, "#");
+    for (int i = 0; i < COLS; i++) {
+        mvprintw(LINES - 1, i, "#");
+    }
 
-    mvprintw(LINES, 0, "Score: %d | Use Arrows to move, 'q' to quit", score);
+    mvprintw(LINES, 0, "Puntos: %d | Muevete con las flechas, 'q' para salir", score);
     refresh();
 }
 
@@ -83,13 +90,13 @@ void Input() {
             if (dir != RIGHT) dir = LEFT;
             break;
         case KEY_RIGHT:
-            if (dir != LEFT) dir = RIGHT;
+            if (dir != LEFT)  dir = RIGHT;
             break;
         case KEY_UP:
-            if (dir != DOWN) dir = UP;
+            if (dir != DOWN)  dir = UP;
             break;
         case KEY_DOWN:
-            if (dir != UP) dir = DOWN;
+            if (dir != UP)    dir = DOWN;
             break;
         case 'q':
         case 'Q':
@@ -102,16 +109,17 @@ void Logic() {
     int prevX = tailX[0];
     int prevY = tailY[0];
     int prev2X, prev2Y;
+    
     tailX[0] = x;
     tailY[0] = y;
 
     for (int i = 1; i < nTail; i++) {
-        prev2X = tailX[i];
-        prev2Y = tailY[i];
+        prev2X   = tailX[i];
+        prev2Y   = tailY[i];
         tailX[i] = prevX;
         tailY[i] = prevY;
-        prevX = prev2X;
-        prevY = prev2Y;
+        prevX    = prev2X;
+        prevY    = prev2Y;
     }
 
     switch (dir) {
@@ -119,21 +127,21 @@ void Logic() {
         case RIGHT: x++; break;
         case UP:    y--; break;
         case DOWN:  y++; break;
-        default: break;
+        default:         break;
     }
 
-    // Wall collision (wrap around or die, let's wrap around for now)
-    if (x >= COLS - 1) x = 1; else if (x < 1) x = COLS - 2;
-    if (y >= LINES - 1) y = 1; else if (y < 1) y = LINES - 2;
+    if (x >= COLS - 1) x = 1; 
+    else if (x < 1)    x = COLS - 2;
+    
+    if (y >= LINES - 1) y = 1; 
+    else if (y < 1)     y = LINES - 2;
 
-    // Tail collision
     for (int i = 0; i < nTail; i++) {
         if (tailX[i] == x && tailY[i] == y) {
             gameOver = 1;
         }
     }
 
-    // Eat fruit
     if (x == fruitX && y == fruitY) {
         score += 10;
         fruitX = (rand() % (COLS - 2)) + 1;
@@ -144,13 +152,16 @@ void Logic() {
 
 int main() {
     Setup();
+    
     while (!gameOver) {
         Draw();
         Input();
         Logic();
         usleep(DELAY);
     }
+    
     endwin();
-    printf("Game Over! Final Score: %d\n", score);
+    printf("¡Fin del Juego! Puntuacion final: %d\n", score);
+    
     return 0;
 }
